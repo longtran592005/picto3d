@@ -197,8 +197,11 @@ sau mỗi job.
 - **`torchmcubes` build lỗi**: `pip install PyMCubes`; backend tự shim (chậm hơn).
 - **CUDA OOM**: giảm `mc_resolution` (192), `target_faces` (30000),
   `PICTO3D_CHUNK_SIZE=4096`; khởi động lại runtime Colab.
-- **Lỗi transformers/huggingface_hub**: giữ đúng cặp
-  `transformers==4.35.0` + `huggingface-hub==0.25.2`.
+- **`ResolutionImpossible` khi `pip install`**: không pin
+  `transformers==4.35.0` (bản này cần `tokenizers<0.15`, không có wheel cho
+  Python mới trên Colab). Requirements hiện dùng `transformers>=4.40,<5`.
+- **`nvidia-smi: command not found`**: runtime đang là CPU — chọn
+  `Runtime → Change runtime type → T4 GPU` rồi restart.
 - **Web báo CORS**: kiểm tra URL không có dấu `/` thừa và server trả
   `Access-Control-Allow-Origin: *` (đã bật mặc định).
 - **Tunnel đổi URL sau khi restart**: dán URL mới vào web studio.

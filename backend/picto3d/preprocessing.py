@@ -28,6 +28,10 @@ Image.MAX_IMAGE_PIXELS = 50_000_000
 _NEUTRAL_GRAY = (127, 127, 127)
 _MAX_SOURCE_EDGE = 2048
 
+# Pillow >= 9.1 exposes the resampling enums; older aliases are being removed.
+_LANCZOS = Image.Resampling.LANCZOS
+_BILINEAR = Image.Resampling.BILINEAR
+
 _session_lock = threading.Lock()
 _sessions: dict[str, object] = {}
 
@@ -71,7 +75,7 @@ def decode_image(data: bytes, *, name: str = "upload") -> Image.Image:
         ) from exc
 
     if max(image.size) > _MAX_SOURCE_EDGE:
-        image.thumbnail((_MAX_SOURCE_EDGE, _MAX_SOURCE_EDGE), Image.LANCZOS)
+        image.thumbnail((_MAX_SOURCE_EDGE, _MAX_SOURCE_EDGE), _LANCZOS)
     return image
 
 
@@ -139,7 +143,7 @@ def remove_background(image: Image.Image, session: object | None) -> Image.Image
 def _score_alpha(rgba: Image.Image) -> tuple[float, float, float]:
     """Heuristic quality score: coverage, bbox fill, sharpness, centering."""
 
-    sample = rgba.resize((256, 256), Image.BILINEAR)
+    sample = rgba.resize((256, 256), _BILINEAR)
     arr = np.asarray(sample, dtype=np.float32)
     alpha = arr[..., 3] / 255.0
     mask = alpha > 0.12
@@ -201,7 +205,7 @@ def _center_foreground(
     ox = (side - w) // 2
     canvas[oy : oy + h, ox : ox + w] = fg
 
-    framed = Image.fromarray(canvas, mode="RGBA").resize((size, size), Image.LANCZOS)
+    framed = Image.fromarray(canvas).resize((size, size), _LANCZOS)
     plate = Image.new("RGB", (size, size), background)
     plate.paste(framed, (0, 0), framed)
     return plate
@@ -216,7 +220,7 @@ def _letterbox_square(
 
     plate = Image.new("RGB", (size, size), background)
     copy = image.copy()
-    copy.thumbnail((size, size), Image.LANCZOS)
+    copy.thumbnail((size, size), _LANCZOS)
     offset = ((size - copy.width) // 2, (size - copy.height) // 2)
     if copy.mode == "RGBA":
         plate.paste(copy, offset, copy)

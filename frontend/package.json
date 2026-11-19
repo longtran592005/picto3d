@@ -1,0 +1,21 @@
+{
+  "name": "picto3d-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Picto3D — Image to 3D studio viewer (Vite + TypeScript + Three.js)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "three": "^0.187.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.187.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8"
+  }
+}

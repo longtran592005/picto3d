@@ -1,0 +1,32 @@
+# Picto3D Backend — core dependencies
+#
+# PyTorch is intentionally NOT pinned here: install the build that matches
+# your CUDA runtime first (Colab already ships with a compatible build).
+#
+#   pip install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+#
+# TripoSR itself is not a pip package. Clone it and put it on PYTHONPATH:
+#   git clone --depth 1 https://github.com/VAST-AI-Research/TripoSR.git
+#   export PICTO3D_TRIPOSR_PATH=/content/TripoSR
+#
+# On a machine with nvcc (Colab / CUDA devel image):
+#   pip install git+https://github.com/tatsy/torchmcubes.git
+# Without torchmcubes the server falls back to PyMCubes on CPU (slower):
+#   pip install PyMCubes
+
+fastapi>=0.115.0
+uvicorn[standard]>=0.30.0
+python-multipart>=0.0.9
+pydantic>=2.7.0
+
+numpy>=1.24
+scipy>=1.11
+Pillow>=10.1
+trimesh>=4.0.5
+fast-simplification>=0.1.7
+omegaconf>=2.3.0
+einops>=0.7.0
+transformers==4.35.0
+huggingface-hub==0.25.2
+rembg>=2.0.57
+onnxruntime>=1.17

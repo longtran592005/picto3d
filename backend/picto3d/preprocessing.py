@@ -109,7 +109,7 @@ def get_rembg_session(model_name: str) -> object | None:
     return None
 
 
-def remove_background(image: Image.Image, session: object | None) -> Image.Image:
+def cut_background(image: Image.Image, session: object | None) -> Image.Image:
     """Return an RGBA cutout. Existing soft alpha is kept as-is."""
 
     if image.mode == "RGBA":
@@ -251,7 +251,7 @@ def preprocess_images(
         image = decode_image(payload, name=name)
 
         if remove_background:
-            cutout = remove_background(image, session)
+            cutout = cut_background(image, session)
             score, coverage, sharpness = _score_alpha(cutout)
             framed = _center_foreground(
                 cutout,
